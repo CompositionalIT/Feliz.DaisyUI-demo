@@ -20,7 +20,7 @@ export default defineConfig({
       jsxRuntime: "classic"
     })
   ],
-  base: "/feliz-daisy-demo/",
+  base: "/Feliz.DaisyUI-demo/",
   root: "./src",
   build: {
     outDir: "../dist",
@@ -30,4 +30,5 @@ export default defineConfig({
     // required if u have: `process is undefined` 
     // while loading react jsoncomponents
     'process.env': {}
-  },})
+  },
+})
