@@ -4,6 +4,13 @@ open Feliz
 open Feliz.DaisyUI
 open Elmish
 
+module Assets =
+    open Fable.Core
+    open Fable.Core.JsInterop
+
+
+    let ghLogo: string = importDefault "../public/github-mark.svg"
+
 module FontAwesome =
 
     let boldIcon iconClass =
@@ -264,42 +271,48 @@ let listView (todos: Todo list) (setFinished: int -> bool -> unit) (clearFinishe
 
 let view model dispatch =
     Html.div [
-        Html.div [
-            prop.className "flex flex-col justify-center items-center h-dvh gap-2"
-            prop.children [
-                if model.SuccessAlert then
+        prop.className "flex flex-col items-center h-[90dvh] overflow-auto"
+        prop.children [
+            Html.a [
+                prop.className "justify-self-start self-end m-3"
+                prop.children [ Html.img [ prop.className "size-12"; prop.src Assets.ghLogo ] ]
+                prop.href "https://github.com/CompositionalIT/Feliz.DaisyUI-demo"
+            ]
+            Html.div [
+                prop.className "grow gap-2 justify-center items-stretch w-5/6 md:w-96"
+                prop.children [
                     Daisy.alert [
+                        prop.text "Your Todo was created!"
                         prop.onClick (fun _ -> DismissAlert |> dispatch)
                         alert.success
-                        prop.text "Your Todo was created!"
-                        prop.className "justify-self-start"
+                        prop.classes [
+                            if not model.SuccessAlert then
+                                "invisible"
+                        ]
                     ]
-                Daisy.card [
-                    card.border
-                    color.bgBase300
-                    color.textBaseContent
-                    prop.className "w-5/6 md:w-96"
-                    prop.children [
-                        Daisy.cardBody [
-                            Daisy.cardTitle [ prop.text model.View.Description ]
-                            match model.View with
-                            | List ->
-                                listView
-                                    model.Todos
-                                    (fun index status -> SetFinished(index, status) |> dispatch)
-                                    (fun _ -> ClearFinished |> dispatch)
-                            | Create ->
-                                CreateView(fun category description -> AddTodo(category, description) |> dispatch)
+                    Daisy.card [
+                        card.border
+                        color.bgBase300
+                        color.textBaseContent
+                        prop.children [
+                            Daisy.cardBody [
+                                Daisy.cardTitle [ prop.text model.View.Description ]
+                                match model.View with
+                                | List ->
+                                    listView
+                                        model.Todos
+                                        (fun index status -> SetFinished(index, status) |> dispatch)
+                                        (fun _ -> ClearFinished |> dispatch)
+                                | Create ->
+                                    CreateView(fun category description -> AddTodo(category, description) |> dispatch)
 
+                            ]
                         ]
                     ]
                 ]
 
             ]
+            dock model.View (SetView >> dispatch)
 
         ]
-
-
-        dock model.View (SetView >> dispatch)
-
     ]
