@@ -6,5 +6,5 @@
 
 
 @plugin 'daisyui' {
-    themes: caramellatte --default;
+    themes: caramellatte --default, abyss --prefersdark;
 }
