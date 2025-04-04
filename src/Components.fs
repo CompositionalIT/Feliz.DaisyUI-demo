@@ -8,7 +8,15 @@ module Assets =
     open Fable.Core
     open Fable.Core.JsInterop
 
-    let ghLogo: string = importDefault "../public/github-mark.svg"
+    let ghLogoBlack: string = importDefault "../public/github-mark.svg"
+
+    let ghLogoWhite: string = importDefault "../public/github-mark-white.svg"
+
+    let ghLogo =
+        React.fragment [
+            Html.img [ prop.src ghLogoBlack; prop.className "size-12 dark:hidden" ]
+            Html.img [ prop.src ghLogoWhite; prop.className "size-12 hidden dark:block" ]
+        ]
 
 module FontAwesome =
 
@@ -273,8 +281,8 @@ let view model dispatch =
         prop.className "flex flex-col items-center h-[90dvh] overflow-auto"
         prop.children [
             Html.a [
-                prop.className "justify-self-start self-end m-3 rounded-md dark:bg-accent p-2"
-                prop.children [ Html.img [ prop.className "size-12"; prop.src Assets.ghLogo ] ]
+                prop.className "justify-self-start self-end m-3"
+                prop.children [ Assets.ghLogo ]
                 prop.href "https://github.com/CompositionalIT/Feliz.DaisyUI-demo"
             ]
             Html.div [
